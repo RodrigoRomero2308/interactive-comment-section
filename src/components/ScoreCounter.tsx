@@ -5,7 +5,7 @@ const ScoreCounter = ({ score, id }: { score: number; id: number }) => {
   const handleDecrement = () => {};
 
   return (
-    <div className="flex p-2 bg-lightGray items-center gap-2 rounded-xl rubik">
+    <div className="flex p-2 bg-veryLightGray items-center gap-2 rounded-xl rubik">
       <div className="p-1" onClick={handleIncrement}>
         <img src="images/icon-plus.svg" alt="" />
       </div>

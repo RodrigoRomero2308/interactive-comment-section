@@ -17,14 +17,14 @@ const CardHeader = ({
         <source src={user.image.webp.slice(2) /* Todas empiezan con "./" */} />
         <img src={user.image.png.slice(2)} alt="" width={32}></img>
       </picture>
-      <div className="font-bold">{user.username}</div>
+      <div className="font-bold text-darkBlue">{user.username}</div>
       {currentUser && currentUser.username === user.username && (
         <div className="py-1 px-2 bg-moderateBlue text-white text-xs rounded-sm">
           you
         </div>
       )}
 
-      <div className="">{createdAt}</div>
+      <div className="text-grayishBlue">{createdAt}</div>
     </div>
   );
 };
