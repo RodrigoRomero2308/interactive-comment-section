@@ -1,8 +1,14 @@
+import { appContext } from "@/context/appContext/appContextProvider";
+import { IComment } from "@/interfaces/IComment";
+import { useContext } from "react";
+
 /* eslint-disable @next/next/no-img-element */
-const ReplyButton = ({ replyTo, id }: { replyTo: string; id: number }) => {
+const ReplyButton = ({ comment }: { comment: IComment }) => {
+  const { setCommentToReply } = useContext(appContext);
   const handleClick = () => {
-    console.log(replyTo);
-    console.log(id);
+    setCommentToReply(comment);
+    const replyCommentBox = document.getElementById("reply-comment-box");
+    replyCommentBox?.focus();
   };
   return (
     <div onClick={handleClick} className="flex gap-1 items-center rubik p-2">

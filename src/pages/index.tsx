@@ -2,7 +2,7 @@
 
 import { AppContextProvider } from "@/context/appContext/appContextProvider";
 import { IUser } from "@/interfaces/IUser";
-import { useCallback, useState } from "react";
+import { useRef, useState } from "react";
 import data from "@/assets/data.json";
 import { IComment } from "@/interfaces/IComment";
 import CardList from "@/components/CardList";
@@ -14,6 +14,7 @@ export default function Home() {
   );
   const [comments, setComments] = useState<IComment[]>(data.comments);
   const [commentToReply, setCommentToReply] = useState<IComment>();
+  const commentToFocus = useRef<number>();
 
   const addReplyToComment = (content: string, commentId?: number) => {
     if (!currentUser) return;
@@ -26,6 +27,8 @@ export default function Home() {
       user: currentUser,
       replies: [],
     };
+
+    commentToFocus.current = newCommment.id;
 
     const findAndAddReply = (
       commentId: number,
@@ -66,6 +69,39 @@ export default function Home() {
     });
   };
 
+  const changeScore = (
+    commentId: number,
+    action: "decrement" | "increment"
+  ) => {
+    const findAndChangeScore = (
+      commentId: number,
+      commentsToLookIn: IComment[]
+    ): void | IComment[] => {
+      const found = commentsToLookIn.find((item) => item.id === commentId);
+      if (found) {
+        found.score = found.score + (action === "decrement" ? -1 : 1);
+        return;
+      } else
+        return findAndChangeScore(
+          commentId,
+          commentsToLookIn
+            .filter((item) => !!item.replies)
+            .map((item) => item.replies)
+            .flat() as IComment[]
+        );
+    };
+
+    setComments((oldComments) => {
+      const cloneOfComments = JSON.parse(
+        JSON.stringify(oldComments)
+      ) as IComment[];
+
+      findAndChangeScore(commentId, cloneOfComments);
+
+      return cloneOfComments;
+    });
+  };
+
   return (
     <AppContextProvider
       value={{
@@ -76,6 +112,8 @@ export default function Home() {
         addReplyToComment,
         commentToReply,
         setCommentToReply,
+        commentToFocus,
+        changeScore,
       }}
     >
       <div className="bg-veryLightGray min-h-screen">

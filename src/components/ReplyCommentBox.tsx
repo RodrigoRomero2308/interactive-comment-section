@@ -10,6 +10,7 @@ const ReplyCommentBox = () => {
   return (
     <div className="rubik p-4 bg-white rounded-lg flex flex-col gap-4">
       <textarea
+        id="reply-comment-box"
         ref={textAreaRef}
         className="block w-full px-4 p-2 placeholder:text-grayishBlue border-solid border border-lightGrayishBlue rounded-lg"
         rows={3}

@@ -1,8 +1,16 @@
+import { appContext } from "@/context/appContext/appContextProvider";
+import { useContext } from "react";
+
 /* eslint-disable @next/next/no-img-element */
 const ScoreCounter = ({ score, id }: { score: number; id: number }) => {
-  const handleIncrement = () => {};
+  const { changeScore } = useContext(appContext);
+  const handleIncrement = () => {
+    changeScore(id, "increment");
+  };
 
-  const handleDecrement = () => {};
+  const handleDecrement = () => {
+    changeScore(id, "decrement");
+  };
 
   return (
     <div className="flex p-2 bg-veryLightGray items-center gap-2 rounded-xl rubik">
