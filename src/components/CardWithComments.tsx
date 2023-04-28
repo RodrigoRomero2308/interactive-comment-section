@@ -4,7 +4,7 @@ import CardList from "./CardList";
 
 const CardWithComments = ({ comment }: { comment: IComment }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <Card comment={comment} />
       {comment.replies?.length ? (
         <div className="flex gap-3 items-stretch">

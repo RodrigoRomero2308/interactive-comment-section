@@ -7,12 +7,17 @@ export interface IAppContext {
   setCurrentUser: Dispatch<SetStateAction<IUser | undefined>>;
   comments: IComment[];
   setComments: Dispatch<SetStateAction<IComment[]>>;
+  addReplyToComment: (content: string, commentId?: number) => void;
+  commentToReply?: IComment;
+  setCommentToReply: Dispatch<SetStateAction<IComment | undefined>>;
 }
 
 export const appContext = createContext<IAppContext>({
   setCurrentUser: () => undefined,
   comments: [],
   setComments: () => [],
+  addReplyToComment: () => {},
+  setCommentToReply: () => {},
 });
 
 export const AppContextProvider = appContext.Provider;
