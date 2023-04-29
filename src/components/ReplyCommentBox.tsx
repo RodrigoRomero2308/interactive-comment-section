@@ -2,9 +2,14 @@ import { useContext, useRef } from "react";
 import AvatarImage from "./AvatarImage";
 import { appContext } from "@/context/appContext/appContextProvider";
 
-const ReplyCommentBox = () => {
-  const { currentUser, commentToReply, setCommentToReply, addReplyToComment } =
-    useContext(appContext);
+const ReplyCommentBox = ({
+  commentId,
+  onOk,
+}: {
+  commentId?: number;
+  onOk?: () => void;
+}) => {
+  const { currentUser, addReplyToComment } = useContext(appContext);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   if (!currentUser) return null;
   return (
@@ -22,14 +27,14 @@ const ReplyCommentBox = () => {
           onClick={() => {
             if (textAreaRef.current) {
               const content = textAreaRef.current.value;
-              addReplyToComment(content, commentToReply?.id);
-              setCommentToReply(undefined);
+              addReplyToComment(content, commentId);
               textAreaRef.current.value = "";
+              onOk?.();
             }
           }}
           className="bg-moderateBlue text-white px-6 py-3 rounded-lg"
         >
-          SEND
+          {commentId ? "REPLY" : "SEND"}
         </button>
       </div>
     </div>

@@ -13,7 +13,6 @@ export default function Home() {
     data.currentUser
   );
   const [comments, setComments] = useState<IComment[]>(data.comments);
-  const [commentToReply, setCommentToReply] = useState<IComment>();
   const commentToFocus = useRef<number>();
 
   const addReplyToComment = (content: string, commentId?: number) => {
@@ -27,8 +26,6 @@ export default function Home() {
       user: currentUser,
       replies: [],
     };
-
-    commentToFocus.current = newCommment.id;
 
     const findAndAddReply = (
       commentId: number,
@@ -102,6 +99,56 @@ export default function Home() {
     });
   };
 
+  const editComment = (newContent: string, commentId: number) => {
+    const findAndEdit = (
+      commentId: number,
+      commentsToLookIn: IComment[]
+    ): void | IComment[] => {
+      const found = commentsToLookIn.find((item) => item.id === commentId);
+      if (found) {
+        found.content = newContent;
+        return;
+      } else
+        return findAndEdit(
+          commentId,
+          commentsToLookIn
+            .filter((item) => !!item.replies)
+            .map((item) => item.replies)
+            .flat() as IComment[]
+        );
+    };
+
+    setComments((oldComments) => {
+      const cloneOfComments = JSON.parse(
+        JSON.stringify(oldComments)
+      ) as IComment[];
+
+      findAndEdit(commentId, cloneOfComments);
+
+      return cloneOfComments;
+    });
+  };
+
+  const deleteComment = (commentId: number) => {
+    const filteredComments = (commentsToFilter: IComment[]) => {
+      return commentsToFilter
+        .filter((item) => item.id !== commentId)
+        .map(
+          (item): IComment => ({
+            ...item,
+            replies: item.replies ? filteredComments(item.replies) : undefined,
+          })
+        );
+    };
+    setComments((oldComments) => {
+      const cloneOfComments = JSON.parse(
+        JSON.stringify(oldComments)
+      ) as IComment[];
+
+      return filteredComments(cloneOfComments);
+    });
+  };
+
   return (
     <AppContextProvider
       value={{
@@ -110,10 +157,10 @@ export default function Home() {
         comments,
         setComments,
         addReplyToComment,
-        commentToReply,
-        setCommentToReply,
         commentToFocus,
         changeScore,
+        editComment,
+        deleteComment,
       }}
     >
       <div className="bg-veryLightGray min-h-screen">

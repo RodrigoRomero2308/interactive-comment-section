@@ -13,10 +13,10 @@ export interface IAppContext {
   comments: IComment[];
   setComments: Dispatch<SetStateAction<IComment[]>>;
   addReplyToComment: (content: string, commentId?: number) => void;
-  commentToReply?: IComment;
-  setCommentToReply: Dispatch<SetStateAction<IComment | undefined>>;
   commentToFocus: MutableRefObject<number | undefined>;
   changeScore: (commentId: number, action: "decrement" | "increment") => void;
+  editComment: (newContent: string, commentId: number) => void;
+  deleteComment: (commentId: number) => void;
 }
 
 export const appContext = createContext<IAppContext>({
@@ -24,9 +24,10 @@ export const appContext = createContext<IAppContext>({
   comments: [],
   setComments: () => [],
   addReplyToComment: () => {},
-  setCommentToReply: () => {},
   commentToFocus: { current: 1 },
   changeScore: () => {},
+  editComment: () => {},
+  deleteComment: () => {},
 });
 
 export const AppContextProvider = appContext.Provider;
