@@ -4,16 +4,19 @@ import { appContext } from "@/context/appContext/appContextProvider";
 
 const ReplyCommentBox = ({
   commentId,
+  inline,
   onOk,
 }: {
   commentId?: number;
+  inline?: boolean;
   onOk?: () => void;
 }) => {
   const { currentUser, addReplyToComment } = useContext(appContext);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   if (!currentUser) return null;
-  return (
-    <div className="rubik p-4 bg-white rounded-lg flex flex-col gap-4">
+
+  const content = (
+    <>
       <textarea
         id="reply-comment-box"
         ref={textAreaRef}
@@ -37,6 +40,13 @@ const ReplyCommentBox = ({
           {commentId ? "REPLY" : "SEND"}
         </button>
       </div>
+    </>
+  );
+  return inline ? (
+    content
+  ) : (
+    <div className="rubik p-4 bg-white rounded-lg flex flex-col gap-4">
+      {content}
     </div>
   );
 };

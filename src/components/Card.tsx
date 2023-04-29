@@ -8,10 +8,13 @@ import ReplyButton from "./ReplyButton";
 import { useContext, useLayoutEffect, useState } from "react";
 import { appContext } from "@/context/appContext/appContextProvider";
 import ReplyCommentBox from "./ReplyCommentBox";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
 
 const Card = ({ comment }: { comment: IComment }) => {
-  const { commentToFocus } = useContext(appContext);
+  const { commentToFocus, currentUser } = useContext(appContext);
   const [showReplyCommentBox, setShowReplyCommentBox] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   useLayoutEffect(() => {
     if (commentToFocus.current === comment.id) {
@@ -23,6 +26,8 @@ const Card = ({ comment }: { comment: IComment }) => {
       });
     }
   }, [comment.id, commentToFocus]);
+
+  const commentBelongsToUser = currentUser?.username === comment.user.username;
 
   const onReplyClick = () => {
     setShowReplyCommentBox((oldValue) => !oldValue);
@@ -46,9 +51,25 @@ const Card = ({ comment }: { comment: IComment }) => {
           content={comment.content}
           replyingTo={comment.replyingTo}
         ></CardContent>
-        <div className="flex p-2 justify-between">
-          <ScoreCounter id={comment.id} score={comment.score}></ScoreCounter>
-          <ReplyButton onClick={onReplyClick}></ReplyButton>
+        <div className="flex p-2 w-full">
+          <ScoreCounter
+            className="flex-grow-0"
+            id={comment.id}
+            score={comment.score}
+          ></ScoreCounter>
+          <div className="flex-1"></div>
+          {!commentBelongsToUser && (
+            <ReplyButton
+              className="flex-grow-0"
+              onClick={onReplyClick}
+            ></ReplyButton>
+          )}
+          {commentBelongsToUser && (
+            <>
+              <DeleteButton className="flex-grow-0" onClick={() => {}} />
+              <EditButton className="flex-grow-0" onClick={() => {}} />
+            </>
+          )}
         </div>
       </div>
       {showReplyCommentBox ? (

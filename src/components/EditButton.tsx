@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-const ReplyButton = ({
+const EditButton = ({
   onClick,
   className,
 }: {
@@ -12,7 +12,7 @@ const ReplyButton = ({
       className={`flex gap-1 items-center rubik p-2 ${className}`}
     >
       <img
-        src="images/icon-reply.svg"
+        src="images/icon-edit.svg"
         alt=""
         className="block mr-1"
         style={{
@@ -21,9 +21,9 @@ const ReplyButton = ({
         width={14}
         height={14}
       ></img>
-      <div className="font-semibold text-moderateBlue">Reply</div>
+      <div className="font-semibold text-moderateBlue">Edit</div>
     </div>
   );
 };
 
-export default ReplyButton;
+export default EditButton;

@@ -2,7 +2,15 @@ import { appContext } from "@/context/appContext/appContextProvider";
 import { useContext } from "react";
 
 /* eslint-disable @next/next/no-img-element */
-const ScoreCounter = ({ score, id }: { score: number; id: number }) => {
+const ScoreCounter = ({
+  score,
+  id,
+  className,
+}: {
+  score: number;
+  id: number;
+  className?: string;
+}) => {
   const { changeScore } = useContext(appContext);
   const handleIncrement = () => {
     changeScore(id, "increment");
@@ -13,7 +21,9 @@ const ScoreCounter = ({ score, id }: { score: number; id: number }) => {
   };
 
   return (
-    <div className="flex p-2 bg-veryLightGray items-center gap-2 rounded-xl rubik">
+    <div
+      className={`flex p-2 bg-veryLightGray items-center gap-2 rounded-xl rubik ${className}`}
+    >
       <div className="p-1" onClick={handleIncrement}>
         <img src="images/icon-plus.svg" alt="" />
       </div>
